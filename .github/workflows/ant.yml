@@ -11,24 +11,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
+      
+      - name: Verify Environment
+        run: |
+          java -version
+          ant -version
+          ls -la  # Show directory structure
+          
       - name: Set up JDK 11
         uses: actions/setup-java@v4
         with:
           java-version: '11'
           distribution: 'temurin'
-
+          
       - name: Build with Ant
-        run: ant build
-
-      - name: Run Tests (Optional)
-        run: ant test
-
-      - name: Upload Artifacts (Optional)
-        if: success()
-        uses: actions/upload-artifact@v4
-        with:
-          name: build-artifacts
-          path: |
-            build/
-            dist/
+        run: ant -verbose build || exit 1
